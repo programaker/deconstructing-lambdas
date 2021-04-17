@@ -1,6 +1,6 @@
 package deconstructinglambdas
 
-import deconstructinglambdas.typeclass.Category
+import deconstructinglambdas.typeclass.{Cartesian, Category}
 
 final case class JSFunc[A, B](renderJs: String)
 
@@ -18,3 +18,9 @@ object JSFunc:
             |  return snd(fst(input));
             |}""".stripMargin
         )
+
+  given Cartesian[JSFunc] with
+    def copy[A]: JSFunc[A, (A, A)] = JSFunc("(x => ([x, x]))")
+    def consume[A]: JSFunc[A, Unit] = JSFunc("(x => null)")
+    def fst[L, R]: JSFunc[(L, R), L] = JSFunc("(([x, _]) => x)")
+    def snd[L, R]: JSFunc[(L, R), R] = JSFunc("(([_, y]) => y)")

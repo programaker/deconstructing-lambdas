@@ -2,7 +2,7 @@ import deconstructinglambdas.JSFunc
 import deconstructinglambdas.typeclass.Category
 
 def thrice[K[_, _]: Category, A](k: K[A, A]): K[A, A] = 
-  k >>> k >>> k
+  k >>> (k >>> k)
 
 def add3: Int => Int = 
   thrice((_: Int) + 1)

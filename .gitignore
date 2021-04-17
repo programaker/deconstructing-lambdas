@@ -1,0 +1,11 @@
+.idea
+.bloop
+.metals
+.vscode
+.env
+.DS_Store
+.bsp
+target
+metals.sbt
+*.sc
+

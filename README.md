@@ -1,8 +1,4 @@
-## sbt project compiled with Scala 3
+# Deconstructing Lambdas
 
-### Usage
-
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
-
-For more information on the sbt-dotty plugin, see the
-[dotty-example-project](https://github.com/lampepfl/dotty-example-project/blob/master/README.md).
+An attempt to implement the code from this talk https://www.dropbox.com/s/1gxkl8x9pwh2muy/deconstructing-lambdas.pdf?dl=0 
+(originally in Haskell) in Scala 3.

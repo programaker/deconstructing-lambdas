@@ -7,3 +7,8 @@ trait Strong[K[_, _]: Category]:
 
 object Strong:
   def apply[K[_, _]: Category](using k: Strong[K]): Strong[K] = k
+
+  given Strong[Function] with
+    extension [A, B](k: A => B)
+      def first[Other]: ((A, Other)) => (B, Other) = (a, other) => (k(a), other)
+      def second[Other]: ((Other, A)) => (Other, B) = (other, a) => (other, k(a))

@@ -8,3 +8,9 @@ trait Cartesian[K[_, _]: Category]:
 
 object Cartesian:
   def apply[K[_, _]: Category](using k: Cartesian[K]): Cartesian[K] = k
+
+  given Cartesian[Function] with 
+    def copy[A]: A => (A, A) = a => (a, a)
+    def consume[A]: A => Unit = a => ()
+    def fst[L, R]: ((L, R)) => L = (l, r) => l
+    def snd[L, R]: ((L, R)) => R = (l, r) => r

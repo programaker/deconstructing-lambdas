@@ -1,6 +1,6 @@
 package deconstructinglambdas
 
-import deconstructinglambdas.typeclass.{Cartesian, Category}
+import deconstructinglambdas.typeclass.{Cartesian, Category, Strong}
 
 final case class JSFunc[A, B](renderJs: String)
 
@@ -24,3 +24,23 @@ object JSFunc:
     def consume[A]: JSFunc[A, Unit] = JSFunc("(x => null)")
     def fst[L, R]: JSFunc[(L, R), L] = JSFunc("(([x, _]) => x)")
     def snd[L, R]: JSFunc[(L, R), R] = JSFunc("(([_, y]) => y)")
+
+  given Strong[JSFunc] with
+    extension [A, B](k: JSFunc[A, B])
+      def first[Other]: JSFunc[(A, Other), (B, Other)] =
+        JSFunc(
+          s"""([l, r]) => {
+            |  const onFirst = ${k.renderJs};
+            |  const result = onFirst(l);
+            |  return [result, r];
+            |}""".stripMargin
+        )
+
+      def second[Other]: JSFunc[(Other, A), (Other, B)] =
+        JSFunc(
+          s"""([l, r]) => {
+             |  const onSecond = ${k.renderJs};
+             |  const result = onSecond(r);
+             |  return [l, result];
+             |}""".stripMargin
+        )

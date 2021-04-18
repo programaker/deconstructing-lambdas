@@ -1,5 +1,7 @@
+package deconstructinglambdas
+
 import deconstructinglambdas.JSFunc
-import deconstructinglambdas.typeclass.Category
+import deconstructinglambdas.typeclass.{Cartesian, Category, Strong}
 
 def thrice[K[_, _]: Category, A](k: K[A, A]): K[A, A] = 
   k >>> (k >>> k)
@@ -12,3 +14,7 @@ def times10: JSFunc[Int, Int] =
 
 def times1000: JSFunc[Int, Int] =
   thrice(times10)
+
+def isPalindrom[K[_, _]: Category: Cartesian: Strong]: K[String, Boolean] =
+  ???
+  //Cartesian[K].copy >>> (((_: String).reverse).first)

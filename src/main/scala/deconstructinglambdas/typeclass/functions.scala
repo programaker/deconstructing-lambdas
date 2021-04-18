@@ -1,3 +1,5 @@
+package deconstructinglambdas.typeclass
+
 import deconstructinglambdas.typeclass.{Cartesian, Category, Strong}
 
 extension [K[_, _]: Category: Strong, L, L1](l: K[L, L1])

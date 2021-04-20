@@ -15,12 +15,15 @@ def times10: JSFunc[Int, Int] =
 def times1000: JSFunc[Int, Int] =
   thrice(times10)
 
-// `Category` constraint was not necessary in the original  
-def isPalindrome[K[_, _]: Cartesian: Strong: Category](
-  reverse: K[String, String]
-)(compare: K[(String, String), Boolean]
-): K[String, Boolean] = 
-  Cartesian[K].copy[String] >>> (reverse.first >>> compare)  
+def isPalindrome: String => Boolean = 
+  // `Category` constraint was not necessary in the original  
+  def isPalindromeK[K[_, _]: Cartesian: Strong: Category](
+    reverse: K[String, String]
+  )(compare: K[(String, String), Boolean]
+  ): K[String, Boolean] = 
+    Cartesian[K].copy[String] >>> (reverse.first >>> compare)  
+
+  isPalindromeK(reverse = (_: String).reverse)(compare = (ss: (String, String)) => ss._1 == ss._2)
 
 // Did not work =/
 /*def isPalindrome[K[_, _]: Category: Cartesian: Strong]: K[String, Boolean] =

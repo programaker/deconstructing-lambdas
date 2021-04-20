@@ -8,7 +8,6 @@ package deconstructinglambdas
   println("===")
 
   // meh =/
-  val palindrome = isPalindrome(reverse = (_: String).reverse)(compare = (ss: (String, String)) => ss._1 == ss._2)
-  println(palindrome("ovo"))
-  println(palindrome("scala"))
+  println(isPalindrome("ovo"))
+  println(isPalindrome("scala"))
   println("===")

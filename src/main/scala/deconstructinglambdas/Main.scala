@@ -17,3 +17,7 @@ package deconstructinglambdas
   println(isPalindrome_("evilolive"))
   println(isPalindrome_("turkey"))
   println("===")
+
+  val isPalindromeJs = isPalindromeP[JSFunc]
+  println(isPalindromeJs.renderJs)
+  println("===")

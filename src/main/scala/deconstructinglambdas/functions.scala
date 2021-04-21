@@ -1,7 +1,7 @@
 package deconstructinglambdas
 
 import deconstructinglambdas.JSFunc
-import deconstructinglambdas.typeclass.{Cartesian, Category, Strong}
+import deconstructinglambdas.typeclass.{Cartesian, Category, Strong, MyPrimitives}
 
 def thrice[K[_, _]: Category, A](k: K[A, A]): K[A, A] = 
   k >>> (k >>> k)
@@ -24,6 +24,11 @@ def isPalindrome: String => Boolean =
     Cartesian[K].copy[String] >>> (reverse.first >>> compare)  
 
   isPalindromeK(reverse = (_: String).reverse)(compare = (ss: (String, String)) => ss._1 == ss._2)
+
+def isPalindromeP[K[_, _]: MyPrimitives: Cartesian: Strong: Category]: K[String, Boolean] =
+  val c = Cartesian[K]
+  val p = MyPrimitives[K]
+  c.copy >>> (p.reverseString.first >>> p.eq)
 
 // Did not work =/
 /*def isPalindrome[K[_, _]: Category: Cartesian: Strong]: K[String, Boolean] =

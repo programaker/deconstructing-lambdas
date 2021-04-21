@@ -11,3 +11,9 @@ package deconstructinglambdas
   println(isPalindrome("ovo"))
   println(isPalindrome("scala"))
   println("===")
+
+  // yay =D
+  val isPalindrome_ = isPalindromeP[Function]
+  println(isPalindrome_("evilolive"))
+  println(isPalindrome_("turkey"))
+  println("===")

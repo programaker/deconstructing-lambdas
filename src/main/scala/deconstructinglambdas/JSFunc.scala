@@ -1,6 +1,6 @@
 package deconstructinglambdas
 
-import deconstructinglambdas.typeclass.{Cartesian, Category, Strong}
+import deconstructinglambdas.typeclass.{Cartesian, Category, Strong, MyPrimitives}
 
 final case class JSFunc[A, B](renderJs: String)
 
@@ -44,3 +44,10 @@ object JSFunc:
              |  return [l, result];
              |}""".stripMargin
         )
+
+  given MyPrimitives[JSFunc] with 
+    def reverseString: JSFunc[String, String] = 
+      JSFunc("""(s => s.split("").reverse().join(""))""")
+
+    def eq[A](using CanEqual[A, A]): JSFunc[(A, A), Boolean] = 
+      JSFunc("""(([x, y]) => x === y)""")

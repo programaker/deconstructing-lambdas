@@ -7,7 +7,7 @@ trait Category[K[_, _]]:
     def >>>[Z](other: K[Y, Z]): K[X, Z]
 
 object Category:
-  def apply[K[_, _]](using k: Category[K]): Category[K] = k
+  inline def apply[K[_, _]](using k: Category[K]): Category[K] = k
 
   given Category[Function] with 
     def id[X](x: X): X => X =

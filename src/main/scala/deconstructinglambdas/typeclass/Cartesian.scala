@@ -7,7 +7,7 @@ trait Cartesian[K[_, _]: Category]:
   def snd[L, R]: K[(L, R), R]
 
 object Cartesian:
-  def apply[K[_, _]: Category](using k: Cartesian[K]): Cartesian[K] = k
+  inline def apply[K[_, _]: Category](using k: Cartesian[K]): Cartesian[K] = k
 
   given Cartesian[Function] with 
     def copy[A]: A => (A, A) = a => (a, a)

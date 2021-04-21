@@ -1,6 +1,6 @@
 package deconstructinglambdas
 
-import deconstructinglambdas.typeclass.{Cartesian, Category, Strong, MyPrimitives}
+import deconstructinglambdas.typeclass.*
 
 final case class JSFunc[A, B](renderJs: String)
 
@@ -51,3 +51,17 @@ object JSFunc:
 
     def eq[A](using CanEqual[A, A]): JSFunc[(A, A), Boolean] = 
       JSFunc("""(([x, y]) => x === y)""")
+
+  given Cocartesian[JSFunc] with 
+    def injectL[A, B]: JSFunc[A, Either[A, B]] =
+      JSFunc("(x => ({tag: 'left', value: x}))")
+
+    def injectR[A, B]: JSFunc[A, Either[B, A]] = 
+      JSFunc("(x => ({tag: 'right', value: x}))")
+
+    def unify[A]: JSFunc[Either[A, A], A] =
+      JSFunc("(x => (x.value))")
+
+    def tag[A]: JSFunc[(Boolean, A), Either[A, A]] =
+      JSFunc("(([b, x]) => ({tag: b ? 'right' : 'left', value: x}))")
+      

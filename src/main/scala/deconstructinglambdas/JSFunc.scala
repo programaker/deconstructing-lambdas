@@ -13,10 +13,10 @@ object JSFunc:
       def >>>[Z](g: JSFunc[Y, Z]): JSFunc[X, Z] =
         JSFunc(
           s"""(input) => {
-            |  const fst = ${f.renderJs};
-            |  const snd = ${g.renderJs};
-            |  return snd(fst(input));
-            |}""".stripMargin
+          |  const fst = ${f.renderJs};
+          |  const snd = ${g.renderJs};
+          |  return snd(fst(input));
+          |}""".stripMargin
         )
 
   given Cartesian[JSFunc] with
@@ -30,19 +30,19 @@ object JSFunc:
       def first[Other]: JSFunc[(A, Other), (B, Other)] =
         JSFunc(
           s"""([l, r]) => {
-            |  const onFirst = ${k.renderJs};
-            |  const result = onFirst(l);
-            |  return [result, r];
-            |}""".stripMargin
+          |  const onFirst = ${k.renderJs};
+          |  const result = onFirst(l);
+          |  return [result, r];
+          |}""".stripMargin
         )
 
       def second[Other]: JSFunc[(Other, A), (Other, B)] =
         JSFunc(
           s"""([l, r]) => {
-             |  const onSecond = ${k.renderJs};
-             |  const result = onSecond(r);
-             |  return [l, result];
-             |}""".stripMargin
+          |  const onSecond = ${k.renderJs};
+          |  const result = onSecond(r);
+          |  return [l, result];
+          |}""".stripMargin
         )
 
   given MyPrimitives[JSFunc] with 
@@ -64,4 +64,35 @@ object JSFunc:
 
     def tag[A]: JSFunc[(Boolean, A), Either[A, A]] =
       JSFunc("(([b, x]) => ({tag: b ? 'right' : 'left', value: x}))")
-      
+
+  given Choice[JSFunc] with
+    extension [A, B](k: JSFunc[A, B])
+      def left[Other]: JSFunc[Either[A, Other], Either[B, Other]] =
+        JSFunc(
+          s"""(input) => {
+          |  const overLeft = ${k.renderJs};
+          |  if (input.tag == 'left') {
+          |    return { tag: 'left', value: overLeft(input.value) };
+          |  }
+          |  return input;
+          |}""".stripMargin
+        )
+
+      def right[Other]: JSFunc[Either[Other, A], Either[Other, B]] =
+        JSFunc(
+          s"""(input) => {
+          |  const overRight = ${k.renderJs};
+          |  if (input.tag == 'right') {
+          |    return { tag: 'right', value: overRight(input.value) };
+          |  }
+          |  return input;
+          |}""".stripMargin
+        )
+
+  given Numeric[JSFunc] with
+    def num[A](i: Int): JSFunc[A, Int] = JSFunc(s"(x => $i)")
+    def negate: JSFunc[Int, Int] = JSFunc("(x => -x)")
+    def add: JSFunc[(Int, Int), Int] = JSFunc("(([x, y]) => x + y)")
+    def mult: JSFunc[(Int, Int), Int] = JSFunc("(([x, y]) => x * y)")
+    def div: JSFunc[(Int, Int), Int] = JSFunc("(([x, y]) => x / y)")
+    def mod: JSFunc[(Int, Int), Int] = JSFunc("(([x, y]) => x % y)")

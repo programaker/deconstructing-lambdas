@@ -20,3 +20,13 @@ package deconstructinglambdas
   println(isEvenFn(2))
   println(isEvenFn(3))
   println("===")
+
+  val collatzStepFn = collatzStep[Function]
+  println(collatzStepFn(3))  
+  println(collatzStepFn(4))  
+  println(collatzStepFn(5))  
+  println("===")
+
+  val collatzStepJs = collatzStep[JSFunc]
+  println(collatzStepJs.renderJs)
+  println("===")

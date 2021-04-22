@@ -9,4 +9,14 @@ trait Cocartesian[K[_, _]: Category]:
   def tag[A]: K[(Boolean, A), Either[A, A]]
 
 object Cocartesian:
-  inline def apply[K[_, _]: Category](k: Cocartesian[K]): Cocartesian[K] = k  
+  inline def apply[K[_, _]: Category](using k: Cocartesian[K]): Cocartesian[K] = k  
+
+  given Cocartesian[Function] with 
+    def injectL[A, B]: A => Either[A, B] = Left(_)
+    def injectR[A, B]: A => Either[B, A] = Right(_)
+    def unify[A]: Either[A, A] => A = _.fold(identity, identity)
+    
+    def tag[A]: ((Boolean, A)) => Either[A, A] = 
+      _ match 
+        case (true, a) => Right(a)
+        case (false, a) => Left(a)

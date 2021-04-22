@@ -15,3 +15,8 @@ package deconstructinglambdas
   val isPalindromeJs = isPalindrome[JSFunc]
   println(isPalindromeJs.renderJs)
   println("===")
+
+  val isEvenFn = isEven[Function]
+  println(isEvenFn(2))
+  println(isEvenFn(3))
+  println("===")

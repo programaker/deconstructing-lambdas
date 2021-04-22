@@ -25,3 +25,10 @@ def isEven[K[_, _]: Numeric: Cartesian: Strong: Choice: Category: MyPrimitives]:
   val p = MyPrimitives[K]
   val mod2 = strong(n.mod, n.num(2))
   mod2 >>> strong(p.eq, n.num(0))
+
+/** WTF is a Collatz? See https://en.wikipedia.org/wiki/Collatz_conjecture */
+def collatzStep[K[_, _]: Numeric: Cartesian: Cocartesian: Choice: Strong: MyPrimitives: Category]: K[Int, Int] = 
+  val n = Numeric[K]
+  val onOdds = strong(n.mult, n.num(3)) >>> strong(n.add, n.num(1))
+  val onEvens = strong(n.div, n.num(2))
+  matchOn(isEven) >>> (onOdds +++ onEvens) >>> Cocartesian[K].unify  

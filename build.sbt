@@ -5,9 +5,11 @@ lazy val root = project.in(file("."))
     name := "deconstructing-lambdas",
     version := "1.0.0",
     scalaVersion := scala3Version,
-    
+
+    // https://scalacenter.github.io/scala-3-migration-guide/docs/compiler-options/new-compiler-options.html
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",
-      "-language:strictEquality"
+      "-language:strictEquality",
+      "-Ykind-projector:underscores"
     )
   )

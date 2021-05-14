@@ -6,6 +6,7 @@ lazy val root = project.in(file("."))
     version := "1.0.0",
     scalaVersion := scala3Version,
 
+    // https://scalacenter.github.io/scala-3-migration-guide/docs/compiler-options/compiler-options-table.html
     // https://scalacenter.github.io/scala-3-migration-guide/docs/compiler-options/new-compiler-options.html
     scalacOptions ++= Seq(
       "-Yexplicit-nulls",

@@ -5,7 +5,8 @@ lazy val root = project.in(file("."))
     scalaVersion := "3.0.0",
     
     scalacOptions ++= Seq(
+      "-language:strictEquality",
       "-Yexplicit-nulls",
-      "-language:strictEquality"
+      "-Ykind-projector:underscores"
     )
   )

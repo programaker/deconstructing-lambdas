@@ -22,9 +22,9 @@ package deconstructinglambdas
   println("===")
 
   val collatzStepFn = collatzStep[Function]
-  println(collatzStepFn(3))  
-  println(collatzStepFn(4))  
-  println(collatzStepFn(5))  
+  println(collatzStepFn(3))
+  println(collatzStepFn(4))
+  println(collatzStepFn(5))
   println("===")
 
   val collatzStepJs = collatzStep[JSFunc]

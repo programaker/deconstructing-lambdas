@@ -9,7 +9,7 @@ trait Cocartesian[K[_, _]: Category]:
   def tag[A]: K[(Boolean, A), Either[A, A]]
 
 object Cocartesian:
-  inline def apply[K[_, _]: Cocartesian: Category]: Cocartesian[K] = summon
+  inline def apply[K[_, _]: Cocartesian]: Cocartesian[K] = summon
 
   given Cocartesian[Function] with
     def injectL[A, B]: A => Either[A, B] = Left(_)

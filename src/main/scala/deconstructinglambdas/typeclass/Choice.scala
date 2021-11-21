@@ -6,7 +6,7 @@ trait Choice[K[_, _]: Category]:
     def right[Other]: K[Either[Other, A], Either[Other, B]]
 
 object Choice:
-  inline def apply[K[_, _]: Choice: Category]: Choice[K] = summon
+  inline def apply[K[_, _]: Choice]: Choice[K] = summon
 
   given Choice[Function] with
     extension [A, B](k: A => B)

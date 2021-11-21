@@ -2,8 +2,7 @@ package deconstructinglambdas
 
 import deconstructinglambdas.typeclass.*
 
-final case class JSFunc[A, B](renderJs: String)
-
+case class JSFunc[A, B](renderJs: String)
 object JSFunc:
   given Category[JSFunc] with
     def id[X](x: X): JSFunc[X, X] =
@@ -13,10 +12,10 @@ object JSFunc:
       def >>>[Z](g: JSFunc[Y, Z]): JSFunc[X, Z] =
         JSFunc(
           s"""(input) => {
-          |  const fst = ${f.renderJs};
-          |  const snd = ${g.renderJs};
-          |  return snd(fst(input));
-          |}""".stripMargin
+             |  const fst = ${f.renderJs};
+             |  const snd = ${g.renderJs};
+             |  return snd(fst(input));
+             |}""".stripMargin
         )
 
   given Cartesian[JSFunc] with
@@ -30,33 +29,33 @@ object JSFunc:
       def first[Other]: JSFunc[(A, Other), (B, Other)] =
         JSFunc(
           s"""([l, r]) => {
-          |  const onFirst = ${k.renderJs};
-          |  const result = onFirst(l);
-          |  return [result, r];
-          |}""".stripMargin
+             |  const onFirst = ${k.renderJs};
+             |  const result = onFirst(l);
+             |  return [result, r];
+             |}""".stripMargin
         )
 
       def second[Other]: JSFunc[(Other, A), (Other, B)] =
         JSFunc(
           s"""([l, r]) => {
-          |  const onSecond = ${k.renderJs};
-          |  const result = onSecond(r);
-          |  return [l, result];
-          |}""".stripMargin
+             |  const onSecond = ${k.renderJs};
+             |  const result = onSecond(r);
+             |  return [l, result];
+             |}""".stripMargin
         )
 
-  given MyPrimitives[JSFunc] with 
-    def reverseString: JSFunc[String, String] = 
+  given MyPrimitives[JSFunc] with
+    def reverseString: JSFunc[String, String] =
       JSFunc("""(s => s.split("").reverse().join(""))""")
 
-    def eq[A](using CanEqual[A, A]): JSFunc[(A, A), Boolean] = 
+    def eq[A](using CanEqual[A, A]): JSFunc[(A, A), Boolean] =
       JSFunc("""(([x, y]) => x === y)""")
 
-  given Cocartesian[JSFunc] with 
+  given Cocartesian[JSFunc] with
     def injectL[A, B]: JSFunc[A, Either[A, B]] =
       JSFunc("(x => ({tag: 'left', value: x}))")
 
-    def injectR[A, B]: JSFunc[A, Either[B, A]] = 
+    def injectR[A, B]: JSFunc[A, Either[B, A]] =
       JSFunc("(x => ({tag: 'right', value: x}))")
 
     def unify[A]: JSFunc[Either[A, A], A] =
@@ -70,23 +69,23 @@ object JSFunc:
       def left[Other]: JSFunc[Either[A, Other], Either[B, Other]] =
         JSFunc(
           s"""(input) => {
-          |  const overLeft = ${k.renderJs};
-          |  if (input.tag == 'left') {
-          |    return { tag: 'left', value: overLeft(input.value) };
-          |  }
-          |  return input;
-          |}""".stripMargin
+             |  const overLeft = ${k.renderJs};
+             |  if (input.tag == 'left') {
+             |    return { tag: 'left', value: overLeft(input.value) };
+             |  }
+             |  return input;
+             |}""".stripMargin
         )
 
       def right[Other]: JSFunc[Either[Other, A], Either[Other, B]] =
         JSFunc(
           s"""(input) => {
-          |  const overRight = ${k.renderJs};
-          |  if (input.tag == 'right') {
-          |    return { tag: 'right', value: overRight(input.value) };
-          |  }
-          |  return input;
-          |}""".stripMargin
+             |  const overRight = ${k.renderJs};
+             |  if (input.tag == 'right') {
+             |    return { tag: 'right', value: overRight(input.value) };
+             |  }
+             |  return input;
+             |}""".stripMargin
         )
 
   given Numeric[JSFunc] with

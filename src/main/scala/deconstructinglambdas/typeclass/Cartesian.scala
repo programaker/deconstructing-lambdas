@@ -7,9 +7,9 @@ trait Cartesian[K[_, _]: Category]:
   def snd[L, R]: K[(L, R), R]
 
 object Cartesian:
-  inline def apply[K[_, _]: Category](using k: Cartesian[K]): Cartesian[K] = k
+  inline def apply[K[_, _]: Cartesian: Category]: Cartesian[K] = summon
 
-  given Cartesian[Function] with 
+  given Cartesian[Function] with
     def copy[A]: A => (A, A) = a => (a, a)
     def consume[A]: A => Unit = a => ()
     def fst[L, R]: ((L, R)) => L = (l, r) => l

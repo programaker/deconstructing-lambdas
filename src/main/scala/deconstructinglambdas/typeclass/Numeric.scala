@@ -9,7 +9,7 @@ trait Numeric[K[_, _]]:
   def mod: K[(Int, Int), Int]
 
 object Numeric:
-  inline def apply[K[_, _]](using k: Numeric[K]): Numeric[K] = k
+  inline def apply[K[_, _]: Numeric]: Numeric[K] = summon
 
   given Numeric[Function] with
     def num[A](i: Int): A => Int = _ => i

@@ -6,9 +6,9 @@ trait Choice[K[_, _]: Category]:
     def right[Other]: K[Either[Other, A], Either[Other, B]]
 
 object Choice:
-  inline def apply[K[_, _]: Category](using k: Choice[K]): Choice[K] = k
-  
-  given Choice[Function] with 
+  inline def apply[K[_, _]: Choice: Category]: Choice[K] = summon
+
+  given Choice[Function] with
     extension [A, B](k: A => B)
       def left[Other]: Either[A, Other] => Either[B, Other] = _.left.map(k)
       def right[Other]: Either[Other, A] => Either[Other, B] = _.map(k)

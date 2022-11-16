@@ -1,6 +1,6 @@
 package deconstructinglambdas.typeclass
 
-trait Strong[K[_, _]: Category]:
+trait Strong[K[_, _]]:
   extension [A, B](k: K[A, B])
     def first[Other]: K[(A, Other), (B, Other)]
     def second[Other]: K[(Other, A), (Other, B)]

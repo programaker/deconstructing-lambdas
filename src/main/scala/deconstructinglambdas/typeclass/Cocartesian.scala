@@ -1,6 +1,6 @@
 package deconstructinglambdas.typeclass
 
-trait Cocartesian[K[_, _]: Category]:
+trait Cocartesian[K[_, _]]:
   def injectL[A, B]: K[A, Either[A, B]]
   def injectR[A, B]: K[A, Either[B, A]]
   def unify[A]: K[Either[A, A], A]

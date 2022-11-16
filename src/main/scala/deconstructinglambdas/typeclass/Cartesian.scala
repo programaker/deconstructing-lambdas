@@ -1,6 +1,6 @@
 package deconstructinglambdas.typeclass
 
-trait Cartesian[K[_, _]: Category]:
+trait Cartesian[K[_, _]]:
   def copy[A]: K[A, (A, A)]
   def consume[A]: K[A, Unit]
   def fst[L, R]: K[(L, R), L]

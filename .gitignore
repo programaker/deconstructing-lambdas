@@ -7,5 +7,4 @@
 .bsp
 target
 metals.sbt
-*.sc
 .history

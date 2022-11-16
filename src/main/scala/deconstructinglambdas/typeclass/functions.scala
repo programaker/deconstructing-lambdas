@@ -11,8 +11,8 @@ extension [K[_, _]: Category: Cartesian: Strong, A, L](l: K[A, L])
 extension [K[_, _]: Category: Choice, L, L1](l: K[L, L1])
   def +++[R, R1](r: K[R, R1]): K[Either[L, R], Either[L1, R1]] = l.left[R] >>> r.right[L1]
 
-def strong[K[_, _]: Cartesian: Strong: Category, A, B, R](f: K[(A, B), R], x: K[A, B]): K[A, R] =
+def strong[K[_, _]: Category: Cartesian: Strong, A, B, R](f: K[(A, B), R], x: K[A, B]): K[A, R] =
   Cartesian[K].copy >>> x.second >>> f
 
-def matchOn[K[_, _]: Cartesian: Strong: Cocartesian: Category, A](predicate: K[A, Boolean]): K[A, Either[A, A]] =
+def matchOn[K[_, _]: Category: Cartesian: Strong: Cocartesian, A](predicate: K[A, Boolean]): K[A, Either[A, A]] =
   Cartesian[K].copy >>> predicate.first >>> Cocartesian[K].tag

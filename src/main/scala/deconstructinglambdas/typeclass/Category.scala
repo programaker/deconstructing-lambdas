@@ -2,7 +2,9 @@ package deconstructinglambdas.typeclass
 
 trait Category[K[_, _]]:
   def id[X](x: X): K[X, X]
-  extension [X, Y](k: K[X, Y]) def >>>[Z](other: K[Y, Z]): K[X, Z]
+
+  extension [X, Y](k: K[X, Y]) //
+    def >>>[Z](other: K[Y, Z]): K[X, Z]
 
 object Category:
   inline def apply[K[_, _]: Category]: Category[K] = summon

@@ -3,6 +3,7 @@ package deconstructinglambdas
 import deconstructinglambdas.typeclass.*
 
 case class JSFunc[A, B](renderJs: String)
+
 object JSFunc:
   given Category[JSFunc] with
     def id[X](x: X): JSFunc[X, X] =
